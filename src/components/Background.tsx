@@ -37,6 +37,7 @@ export default function Background({ className }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { weather } = useAudio();
   const weatherRef = useRef(weather);
+  const weatherLabel = weather === 'sunrise' ? 'Sunrise' : weather === 'sunny' ? 'Sunny' : weather === 'rain' ? 'Rain' : 'Night';
   weatherRef.current = weather;
 
   useEffect(() => {
@@ -283,7 +284,14 @@ export default function Background({ className }: Props) {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className={`fixed inset-0 -z-10 ${className ?? ''}`} aria-hidden="true" />;
+  return (
+    <div className={`fixed inset-0 -z-10 ${className ?? ''}`}>
+      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
+      <div className="pointer-events-none absolute bottom-6 left-6 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-md">
+        Weather: {weatherLabel}
+      </div>
+    </div>
+  );
 }
 
 function drawCloud(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, color: string, o: number) {

@@ -4,14 +4,15 @@ import { useAudio } from '@/audio/AudioProvider';
 import { Sun, CloudRain, Moon, Sunrise } from 'lucide-react';
 
 const WEATHERS = [
-  { key: 'sunrise', label: 'Sunrise', icon: Sunrise, color: '#fb923c' },
-  { key: 'sunny', label: 'Sunny', icon: Sun, color: '#fcd34d' },
-  { key: 'rain', label: 'Rain', icon: CloudRain, color: '#7dd3fc' },
-  { key: 'night', label: 'Night', icon: Moon, color: '#a78bfa' },
+  { key: 'sunrise', label: 'Sunrise', icon: Sunrise, color: '#fb923c', description: 'Golden light and a warm beginning.' },
+  { key: 'sunny', label: 'Sunny', icon: Sun, color: '#fcd34d', description: 'Bright, cheerful energy and open skies.' },
+  { key: 'rain', label: 'Rain', icon: CloudRain, color: '#7dd3fc', description: 'Soft, reflective mood with a calmer rhythm.' },
+  { key: 'night', label: 'Night', icon: Moon, color: '#a78bfa', description: 'Quiet magic and a deeper, dreamier hush.' },
 ] as const;
 
 export default function SceneWeather() {
   const { weather, setWeather, playWhoosh } = useAudio();
+  const activeWeather = WEATHERS.find((w) => w.key === weather) ?? WEATHERS[0];
 
   return (
     <SceneShell className="text-center">
@@ -56,12 +57,13 @@ export default function SceneWeather() {
         })}
       </div>
 
-      <motion.p
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8 }}
-        className="mt-12 font-hand text-2xl text-white/60"
+      <motion.div
+        initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.8 }}
+        className="mt-10 rounded-2xl border border-white/10 bg-white/10 px-5 py-4 backdrop-blur-md"
       >
-        ☀ Sunny · 🌧 Rain · 🌌 Night — your sky, your choice.
-      </motion.p>
+        <p className="text-xs uppercase tracking-[0.35em] text-white/50">Current atmosphere</p>
+        <p className="mt-2 text-lg font-medium text-white">{activeWeather.label}: {activeWeather.description}</p>
+      </motion.div>
     </SceneShell>
   );
 }

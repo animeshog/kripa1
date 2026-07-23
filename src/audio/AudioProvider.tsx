@@ -18,6 +18,7 @@ type AudioState = {
 };
 
 const Ctx = createContext<AudioState | null>(null);
+const backgroundMusicUrl = new URL('./Perfect - Ed Sheeran   1 Minute Arrangement - Jason Suwito.mp3', import.meta.url).href;
 
 export function useAudio() {
   const c = useContext(Ctx);
@@ -36,9 +37,9 @@ const N = {
 const Fs = { Fs3: 185.00, Fs4: 369.99, Fs5: 698.46 };
 const Csm = { Cs4: 277.18, Cs5: 554.37 };
 
-// ─── Ballad structure ──────────────────────────────────────────────
-// Key of G major. Tempo ~62 BPM. 4/4 time.
-// Chord progression: G — D — Em — C  (I–V–vi–IV, classic warm ballad)
+// ─── Bright, upbeat structure ─────────────────────────────────────
+// Key of G major. Tempo ~84 BPM. 4/4 time.
+// Chord progression: G — D — Em — C  (I–V–vi–IV, with a brighter lift)
 // Each chord = 2 bars = 8 beats. Total loop = 32 beats.
 
 type MelodyNote = { f: number; beat: number; dur: number; vel?: number };
@@ -48,53 +49,56 @@ const PROGRESSION: ChordSection[] = [
   { // G major — bars 1–2
     bass: N.G2,
     pad: [N.G3, N.B3, N.D4],
-    arp: [N.G3, N.B3, N.D4, N.G4, N.D4, N.B3, N.G3, N.B3],
+    arp: [N.G3, N.B3, N.D4, N.G4, N.B4, N.D5, N.B4, N.G4],
     melody: [
       { f: N.D4, beat: 0, dur: 1 }, { f: N.G4, beat: 1, dur: 1 },
-      { f: N.A4, beat: 2, dur: 1 }, { f: N.B4, beat: 3, dur: 1 },
-      { f: N.A4, beat: 4, dur: 1 }, { f: N.G4, beat: 5, dur: 1 },
-      { f: N.E4, beat: 6, dur: 2 },
+      { f: N.B4, beat: 2, dur: 1 }, { f: N.D5, beat: 3, dur: 1 },
+      { f: N.B4, beat: 4, dur: 1 }, { f: N.A4, beat: 5, dur: 1 },
+      { f: N.G4, beat: 6, dur: 2 },
     ],
   },
   { // D major — bars 3–4
     bass: N.D2,
     pad: [N.D3, Fs.Fs3, N.A3],
-    arp: [N.D3, Fs.Fs3, N.A3, N.D4, N.A3, Fs.Fs3, N.D3, Fs.Fs3],
+    arp: [N.D3, Fs.Fs3, N.A3, N.D4, N.Fs4, N.A4, N.Fs4, N.D4],
     melody: [
-      { f: N.A4, beat: 0, dur: 1 }, { f: N.B4, beat: 1, dur: 1 },
-      { f: N.D5, beat: 2, dur: 2 }, { f: N.B4, beat: 4, dur: 1 },
-      { f: N.A4, beat: 5, dur: 1 }, { f: Fs.Fs4, beat: 6, dur: 2 },
+      { f: N.A4, beat: 0, dur: 1 }, { f: N.D5, beat: 1, dur: 1 },
+      { f: N.E5, beat: 2, dur: 1 }, { f: N.F5, beat: 3, dur: 1 },
+      { f: N.E5, beat: 4, dur: 1 }, { f: N.D5, beat: 5, dur: 1 },
+      { f: N.A4, beat: 6, dur: 2 },
     ],
   },
   { // E minor — bars 5–6
     bass: N.E2,
     pad: [N.E3, N.G3, N.B3],
-    arp: [N.E3, N.G3, N.B3, N.E4, N.B3, N.G3, N.E3, N.G3],
+    arp: [N.E3, N.G3, N.B3, N.E4, N.G4, N.B4, N.G4, N.E4],
     melody: [
       { f: N.G4, beat: 0, dur: 1 }, { f: N.B4, beat: 1, dur: 1 },
-      { f: N.E5, beat: 2, dur: 2 }, { f: N.D5, beat: 4, dur: 1 },
-      { f: N.B4, beat: 5, dur: 1 }, { f: N.G4, beat: 6, dur: 2 },
+      { f: N.E5, beat: 2, dur: 1 }, { f: N.G5, beat: 3, dur: 1 },
+      { f: N.E5, beat: 4, dur: 1 }, { f: N.D5, beat: 5, dur: 1 },
+      { f: N.B4, beat: 6, dur: 2 },
     ],
   },
   { // C major — bars 7–8
     bass: N.C2,
     pad: [N.C3, N.E3, N.G3],
-    arp: [N.C3, N.E3, N.G3, N.C4, N.G3, N.E3, N.C3, N.E3],
+    arp: [N.C3, N.E3, N.G3, N.C4, N.E4, N.G4, N.E4, N.C4],
     melody: [
       { f: N.E4, beat: 0, dur: 1 }, { f: N.G4, beat: 1, dur: 1 },
-      { f: N.C5, beat: 2, dur: 2 }, { f: N.B4, beat: 4, dur: 1 },
-      { f: N.G4, beat: 5, dur: 1 }, { f: N.E4, beat: 6, dur: 2 },
+      { f: N.C5, beat: 2, dur: 1 }, { f: N.E5, beat: 3, dur: 1 },
+      { f: N.D5, beat: 4, dur: 1 }, { f: N.C5, beat: 5, dur: 1 },
+      { f: N.G4, beat: 6, dur: 2 },
     ],
   },
 ];
 
-const BEAT = 60 / 62; // seconds per beat at 62 BPM
+const BEAT = 60 / 84; // seconds per beat at 84 BPM
 const LOOP_BEATS = 32;
 
 // ─── Weather variations ────────────────────────────────────────────
 // Adjust melody octave / voicing per weather mood
 const WEATHER_SHIFT: Record<Weather, number> = {
-  sunrise: 0, sunny: 0, rain: -1, night: -1,
+  sunrise: 1, sunny: 1, rain: 0, night: -1,
 };
 
 export function AudioProvider({ children }: { children: ReactNode }) {
@@ -104,6 +108,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const sfxRef = useRef<GainNode | null>(null);
   const reverbRef = useRef<ConvolverNode | null>(null);
   const schedulerRef = useRef<number | null>(null);
+  const bgMusicRef = useRef<HTMLAudioElement | null>(null);
   const nextNoteTimeRef = useRef(0);
   const beatRef = useRef(0);
   const weatherRef = useRef<Weather>('sunrise');
@@ -171,6 +176,22 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     master.gain.linearRampToValueAtTime(target, now + 0.5);
     setVolume(target);
   }, [muted]);
+
+  useEffect(() => {
+    const audio = bgMusicRef.current;
+    if (!audio) return;
+
+    const weatherSettings: Record<Weather, { volume: number; playbackRate: number }> = {
+      sunrise: { volume: muted ? 0 : 0.5, playbackRate: 1.0 },
+      sunny: { volume: muted ? 0 : 0.48, playbackRate: 1.03 },
+      rain: { volume: muted ? 0 : 0.35, playbackRate: 0.92 },
+      night: { volume: muted ? 0 : 0.42, playbackRate: 0.96 },
+    };
+
+    const settings = weatherSettings[weather];
+    audio.volume = settings.volume;
+    audio.playbackRate = settings.playbackRate;
+  }, [muted, weather]);
 
   // ── Piano-like note ──────────────────────────────────────────────
   const playPianoNote = (
@@ -291,10 +312,21 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     masterRef.current!.gain.setValueAtTime(0, ac.currentTime);
     masterRef.current!.gain.linearRampToValueAtTime(0.5, ac.currentTime + 3);
 
-    beatRef.current = 0;
-    nextNoteTimeRef.current = ac.currentTime + 0.1;
-    schedulerRef.current = window.setInterval(schedule, 25);
-  }, [ensureCtx, schedule]);
+    if (schedulerRef.current) {
+      clearInterval(schedulerRef.current);
+      schedulerRef.current = null;
+    }
+
+    if (!bgMusicRef.current) {
+      const audio = new Audio(backgroundMusicUrl);
+      audio.loop = true;
+      audio.volume = muted ? 0 : 0.5;
+      bgMusicRef.current = audio;
+    }
+
+    bgMusicRef.current.currentTime = 0;
+    bgMusicRef.current.play().catch(() => undefined);
+  }, [ensureCtx, muted]);
 
   const begin = useCallback(() => {
     if (started) return;
@@ -389,6 +421,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     return () => {
       if (schedulerRef.current) clearInterval(schedulerRef.current);
+      bgMusicRef.current?.pause();
       ctxRef.current?.close();
     };
   }, []);
