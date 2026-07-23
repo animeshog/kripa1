@@ -8,7 +8,6 @@ type Star = { x: number; y: number; msg: string; kind: 'prayer' | 'promise' | 'h
 
 const STARS: Star[] = [
   { x: 30, y: 25, msg: "I hope you always have mental peace.", kind: 'prayer' },
-  { x: 55, y: 18, msg: "I hope things get better between you and Amit.", kind: 'hope' },
   { x: 72, y: 30, msg: "I hope your mom's health improves soon.", kind: 'prayer' },
   { x: 22, y: 45, msg: "I hope your cousin heals faster.", kind: 'prayer' },
   { x: 48, y: 38, msg: "I hope you succeed — and always smile.", kind: 'hope' },
